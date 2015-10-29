@@ -1,0 +1,4 @@
+// 
+trigger TrgAddressUpdate on Lead(After update) {
+    SetAddressReference.exec_SetAddressReference(Trigger.new, Trigger.old);
+}
