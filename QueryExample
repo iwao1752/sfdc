@@ -1,0 +1,6 @@
+List<Opportunity> assign = [ SELECT Id, Name, CloseDate FROM Opportunity WHERE Account.Name includes ('abc')];
+System.debug(assign);
+
+for( Opportunity a : assign ){
+    System.debug(a.Name + '/' +a.CloseDate );
+}
