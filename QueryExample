@@ -5,8 +5,8 @@ for( Opportunity a : assign ){
     System.debug(a.Id + '/' +a.CloseDate );
 }
 
-AggregateResult[] results = [ SELECT Id, Name, MAX(CloseDate)clsDate FROM Opportunity GROUP BY Id, Name ];
-for ( int i = 0; i < results.length(); i++){
+AggregateResult[] results = [ SELECT MAX(CloseDate)clsDate FROM Opportunity GROUP BY Account.Id ];
+for ( integer i = 0; i < results.size(); i++){
 
-System.debug('Name is ' + results[i].get('Name') + ' /  CloseDate is ' + results[i].get('clsDate'));
+System.debug('CloseDate is ' + results[i].get('clsDate'));
 }
