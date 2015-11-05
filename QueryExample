@@ -1,4 +1,4 @@
-List<Opportunity> assign = [ SELECT Id, Name, CloseDate FROM Opportunity WHERE Account.Name includes ('abc')];
+List<Opportunity> assign = [ SELECT Id, Name, CloseDate FROM Opportunity WHERE Account.Name like '%abc%'];
 System.debug(assign);
 
 for( Opportunity a : assign ){
