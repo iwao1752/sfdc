@@ -1,6 +1,6 @@
-List<Opportunity> assign = [ SELECT Id, Name, CloseDate FROM Opportunity WHERE Account.Name like '%abc%'];
+List<Opportunity> assign = [ SELECT Id, Name, CloseDate FROM Opportunity ORDER BY CloseDate DESC ];
 System.debug(assign);
 
 for( Opportunity a : assign ){
-    System.debug(a.Name + '/' +a.CloseDate );
+    System.debug(a.Id + '/' +a.CloseDate );
 }
