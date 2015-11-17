@@ -1,0 +1,6 @@
+IF ( OR( recordtype_name__c = "Clinic_jyo",recordtype_name__c = "Byoin_jyo",recordtype_name__c = "Kigyo_sei",recordtype_name__c = "Kaigo_jyo") , "1:常勤",
+IF ( CONTAINS( recordtype_name__c, "kyu")  , "5:産休代替" ,
+IF ( CONTAINS( recordtype_name__c, "syokai")  , "6:紹介予定派遣" ,
+IF ( AND( OR( recordtype_name__c = "ClinicHi",recordtype_name__c = "Kaigo_hijyo",recordtype_name__c = "Kigyo_keiyaku",recordtype_name__c = "Kigyo_hijyo" ,recordtype_name__c = "Byouin_hijyo"),  Urikiri_Meisai__c = true) , "2:非常勤紹介（売切）" , 
+IF ( AND( OR( recordtype_name__c = "ClinicHi",recordtype_name__c = "Kaigo_hijyo",recordtype_name__c = "Kigyo_keiyaku",recordtype_name__c = "Kigyo_hijyo" ,recordtype_name__c = "Byouin_hijyo"),  Urikiri_Meisai__c = false) , "3:非常勤紹介（明細）" , 
+ "4:派遣")))))
