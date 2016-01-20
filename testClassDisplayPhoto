@@ -1,0 +1,67 @@
+//テスト用の取引先を作成
+Account ac = new Account();
+ac.Name = 'testAccount';
+insert ac;
+System.debug('acName = ' + ac.Name + '/ acId = ' + ac.Id );
+
+//スタッフID「00999999」のスタッフを作成
+Contact co = new Contact();
+co.Staffid__c = '00999999';
+co.LastName = 'testStaff';
+insert co;
+co.AccountId = ac.Id;
+System.debug('coStaffid = ' + co.Staffid__c + ' / + coLastName = ' + co.LastName + '/ coId = ' + co.Id + ' / coAccountName = ' + co.AccountId);
+
+//DisplayPhotoにテストのスタッフをセットする
+PageReference pageRef = new PageReference('DisplayPhoto' + '/?id=' + co.Id);
+String pid0 = pageRef.getUrl();
+System.debug('The result of getUrl Method = ' + pid0);
+String pid1 = pageRef.getParameters().get('Id');
+System.debug( 'The result of getParameters Method = ' +pid1 );
+
+//ドキュメントのFolderIdを取得する
+List<Document> fid = [SELECT Id, FolderId FROM Document LIMIT 1];
+
+//テスト用のDocumentを生成
+Document dc = new Document();
+dc.Name = 'Staff_' + co.Staffid__c;
+dc.FolderId = fid[0].FolderId;
+insert dc;
+System.debug('Document: Id = ' + dc.id + ' Name = ' + dc.Name);
+
+//該当のスタッフIDからドキュメント名を生成
+List<Contact> staffid = [SELECT Id, Staffid__c FROM Contact WHERE Id = :pageRef.getParameters().get('Id')];
+if( staffid.size() == 0 ){
+    return 'NotFoundStaff';
+} else {
+    String docname = 'Staff_' + staffid[0].Staffid__c;
+    System.debug( 'docname = ' + docname);
+    List<Document> doc = [SELECT Id FROM Document WHERE Name = :docname];
+    if( doc.size() == 0 ){
+        System.debug('sorry...NotFoundDocument');
+    } else {
+        System.debug('servlet/servlet.FileDownload?file=' + doc[0].Id);
+    }
+}
+
+
+//テストデータを削除
+delete co;
+delete ac;
+
+//取引先のテストデータの存在を確認
+List<Account> ac0 = [SELECT Id FROM Account WHERE Name = 'testAccount'];
+If( ac0.size() == 0){
+    System.debug('testAccount delete completed!');
+} else {
+    System.debug('size = ' + ac0.size());
+    System.debug('existing! Id =' + ac0[0].Id);
+}
+//スタッフのテストデータの存在を確認
+List<Contact> co0 = [SELECT Id FROM Contact WHERE Name = 'testStaff'];
+If( co0.size() == 0){
+    System.debug('testStaff delete completed!');
+} else {
+    System.debug('existing');
+}
+
