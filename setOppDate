@@ -1,0 +1,28 @@
+List<AggregateResult> aggResult = [SELECT assign__c FROM order__c WHERE Id = 'a0mp00000008w8eAAA' OR Id = 'a0mp00000008wsJAAQ' GROUP BY assign__c];
+System.debug(aggResult.size());
+List<Opportunity> updateOpp = new List<Opportunity>();
+
+System.debug('各受注を表示');
+for(AggregateResult ar : aggResult){
+    List<order__c> od = [SELECT Id, ordername__c, assign__c, end_date__c FROM order__c WHERE assign__c =: Id.valueOf(String.valueOf(ar.get('assign__c'))) ORDER BY assign__c, end_date__c];
+     for(order__c o : od){
+       System.debug(o.ordername__c + '/assign__c = ' + o.assign__c +  '/end_date__c = ' + o.end_date__c);
+     }
+}
+
+System.debug('同じアサイン内で一番終了日の大きい受注を表示');
+for(AggregateResult ar : aggResult){
+    List<AggregateResult> aggResult2 = [SELECT assign__c, MAX( end_date__c ) EndDate FROM order__c WHERE assign__c =: Id.valueOf(String.valueOf(ar.get('assign__c'))) GROUP BY assign__c];
+     for( AggregateResult ar2 : aggResult2 ){
+       System.debug('assign = ' + ar2.get('assign__c') + '/ ' + ar2.get('EndDate'));
+       Opportunity opp = [SELECT Id, Saisyusyuryou__c FROM Opportunity WHERE Id =: Id.valueOf(String.valueOf(ar2.get('assign__c')))];
+       opp.Saisyusyuryou__c = Date.valueOf(String.valueOf(ar2.get('EndDate')));
+       updateOpp.add(opp);
+     }
+}
+update updateOpp;
+
+for(Opportunity oppDate : updateOpp){
+    System.debug(oppDate.Saisyusyuryou__c);
+}
+
