@@ -9,7 +9,7 @@ for ( Lead l : le ){
     Database.leadConvert lc = new Database.LeadConvert();
     lc.setLeadId(l.Id);
     LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE MasterLabel = '面談登録'];
-    lc.setLeadconvertStatus(convertStatus.MasterLabel);
+    lc.setConvertStatus(convertStatus.MasterLabel);
     lc.setAccountId(ac.Id);
     lc.setDoNotCreateOpportunity(true);
     Database.LeadConvertResult lcr = Database.convertLead(lc);
