@@ -1,0 +1,19 @@
+List<Lead> le =[SELECT Id, staffid__c, Name, Isconverted FROM Lead WHERE Email like '%@test.com' AND Isconverted = false];
+System.debug(le.size());
+
+Account ac = [SELECT Id, Name FROM Account WHERE Name = 'スーパーナース'];
+System.debug(ac.Name);
+
+for ( Lead l : le ){
+    System.debug(l.staffid__c + '/' + l.Name + '/ IsConverted = ' + l.IsConverted);
+    Database.leadConvert lc = new Database.LeadConvert();
+    lc.setLeadId(l.Id);
+    LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE MasterLabel = '面談登録'];
+    lc.setLeadconvertStatus(convertStatus.MasterLabel);
+    lc.setAccountId(ac.Id);
+    lc.setDoNotCreateOpportunity(true);
+    Database.LeadConvertResult lcr = Database.convertLead(lc);
+    System.assert(lcr.isSuccess);
+    System.debug(lcr.isSuccess);
+}
+
