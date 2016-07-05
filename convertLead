@@ -13,7 +13,7 @@ for ( Lead l : le ){
     lc.setAccountId(ac.Id);
     lc.setDoNotCreateOpportunity(true);
     Database.LeadConvertResult lcr = Database.convertLead(lc);
-    System.assert(lcr.isSuccess);
-    System.debug(lcr.isSuccess);
+    System.assert(lcr.isSuccess());
+    System.debug(lcr.isSuccess());
 }
 
